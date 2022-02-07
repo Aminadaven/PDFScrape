@@ -19,12 +19,12 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
     - name: Build with Gradle
-      run: gradlew build
+      run: ./gradlew build
     - name: Build the Docker image
-      run: gradlew buildImage
+      run: ./gradlew buildImage
     - name: Run the Docker image
-      run: runImage
+      run: ./gradlew runImage
     - name: Clean Docker image
-      run: cleanImage
+      run: ./gradlew cleanImage
     - name: Clean Gradle
-      run: graadlew clean
+      run: ./gradlew clean
