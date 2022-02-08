@@ -21,12 +21,10 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --stacktrace
       - name: Build the Docker image
-        run: ./gradlew buildImage
-#      - name: Run the Docker image
-#        run: ./gradlew runImage
+        run: ./gradlew buildImage --stacktrace
       - name: Clean Docker image
-        run: ./gradlew cleanImage
+        run: ./gradlew cleanImage --stacktrace
       - name: Clean Gradle
-        run: ./gradlew clean
+        run: ./gradlew clean --stacktrace
