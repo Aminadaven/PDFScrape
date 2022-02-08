@@ -23,8 +23,8 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
       - name: Build the Docker image
-        run: ./gradlew buildImage
-      - name: Run the Docker image
+#        run: ./gradlew buildImage
+#      - name: Run the Docker image
         run: ./gradlew runImage
       - name: Clean Docker image
         run: ./gradlew cleanImage
