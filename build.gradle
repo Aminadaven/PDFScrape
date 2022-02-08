@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.6.3'
+        springBootVersion = '2.6.+'
     }
 }
 
@@ -53,10 +53,9 @@ tasks.register('buildImage') {
     doLast {
         exec {
             executable "docker"
-            args "build", "-t", "$IMAGE", "--build-arg", "port=$SERVER_PORT",
+            args "build", "-t", "$IMAGE",
                     "--build-arg", "version=$version",
-                    "--build-arg", "project=$rootProject.name",
-                    "--build-arg", "jarfile=app", "."
+                    "--build-arg", "project=$rootProject.name", "."
         }
     }
 }
@@ -65,7 +64,7 @@ tasks.register('runImage') {
     doLast {
         exec {
             executable "docker"
-            args "run", "--name", "$CONTAINER", "-p", "$SERVER_PORT:$SERVER_PORT", "$IMAGE"
+            args "run", "--name", "$CONTAINER", "-p", "$SERVER_PORT:8080", "$IMAGE"
         }
     }
 }
