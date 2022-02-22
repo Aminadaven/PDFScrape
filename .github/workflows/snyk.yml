@@ -19,8 +19,8 @@ jobs:
       
     - name: Build all Docker images
       run: |
-        docker build -t backend ./backend/Dockerfile
-        docker build -t frontend ./frontend/Dockerfile
+        docker build -t backend ./backend/.
+        docker build -t frontend ./frontend/.
       
     - name: Scan backend
       continue-on-error: true
