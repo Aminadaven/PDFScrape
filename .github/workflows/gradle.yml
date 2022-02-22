@@ -24,7 +24,9 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
     - name: Make gradlew executable
-      run: chmod +x ./backend/gradlew
+      run: |
+        cd /backend
+        chmod +x ./gradlew
     - name: Build with Gradle
       run: ./backend/gradlew build --stacktrace
     - name: Clean Gradle
