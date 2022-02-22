@@ -1,0 +1,51 @@
+services:
+  frontend:
+    container_name: frontend
+    image: frontend
+    build:
+      context: ./frontend
+      target: production
+    ports:
+      - 80:80
+    networks:
+      - spring-react
+  backend:
+    container_name: backend
+    image: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    environment:
+      - PG_HOST=db
+      - POSTGRES_DB=files
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+    networks:
+      - spring-postgres
+      - spring-react
+  db:
+    container_name: postgres-db
+    image: postgres:alpine
+    restart: always
+    secrets:
+      - db-password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - spring-postgres
+    environment:
+      - POSTGRES_DB=files
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+volumes:
+  db-data:
+secrets:
+  db-password:
+    SECRET:
+    file: db/password.txt
+networks:
+  spring-postgres:
+  spring-react:

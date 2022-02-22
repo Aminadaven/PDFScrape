@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.6.3'
+        springBootVersion = '2.6.+'
     }
 }
 
@@ -32,31 +32,13 @@ test {
     useJUnitPlatform()
 }
 
-tasks.register('cleanImage') {
-    doLast {
-        exec {
-            executable "docker"
-            args "stop", "$CONTAINER"
-        }
-        exec {
-            executable "docker"
-            args "rm", "-f", "-v", "$CONTAINER"
-        }
-        exec {
-            executable "docker"
-            args "rmi", "-f", "$IMAGE"
-        }
-    }
-}
-
 tasks.register('buildImage') {
     doLast {
         exec {
             executable "docker"
-            args "build", "-t", "$IMAGE", "--build-arg", "port=$SERVER_PORT",
+            args "build", "-t", "$IMAGE",
                     "--build-arg", "version=$version",
-                    "--build-arg", "project=$rootProject.name",
-                    "--build-arg", "jarfile=app", "."
+                    "--build-arg", "project=$rootProject.name", "."
         }
     }
 }
@@ -65,7 +47,34 @@ tasks.register('runImage') {
     doLast {
         exec {
             executable "docker"
-            args "run", "--name", "$CONTAINER", "-p", "$SERVER_PORT:$SERVER_PORT", "$IMAGE"
+            args "run", "--name", "$CONTAINER", "-p", "$SERVER_PORT:8080", "$IMAGE"
+        }
+    }
+}
+
+tasks.register('stopContainer') {
+    doLast {
+        exec {
+            executable "docker"
+            args "stop", "$CONTAINER"
+        }
+    }
+}
+
+tasks.register('cleanContainer') {
+    doLast {
+        exec {
+            executable "docker"
+            args "rm", "-f", "-v", "$CONTAINER"
+        }
+    }
+}
+
+tasks.register('cleanImage') {
+    doLast {
+        exec {
+            executable "docker"
+            args "rmi", "-f", "$IMAGE"
         }
     }
 }

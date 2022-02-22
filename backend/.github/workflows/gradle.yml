@@ -22,9 +22,5 @@ jobs:
         run: chmod +x ./gradlew
       - name: Build with Gradle
         run: ./gradlew build --stacktrace
-      - name: Build the Docker image
-        run: ./gradlew buildImage --stacktrace
-      - name: Clean Docker image
-        run: ./gradlew cleanImage --stacktrace
       - name: Clean Gradle
         run: ./gradlew clean --stacktrace
