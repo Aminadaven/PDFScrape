@@ -46,7 +46,7 @@ volumes:
   db-data:
 secrets:
   db-password:
-    SECRET:
+#    SECRET:
     file: db/password.txt
 networks:
   spring-postgres:
