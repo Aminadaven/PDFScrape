@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ -z "$1" ]
+then
+  echo "usage: env [postgres-password]"
+  exit 1
+fi
+export POSTGRES_HOST=localhost
+export POSTGRES_PORT=5432
+export POSTGRES_DB=files
+export POSTGRES_PASSWORD=$1
