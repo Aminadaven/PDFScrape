@@ -58,9 +58,8 @@ jobs:
         run: chmod +x ./backend/gradlew
 
       - name: Build with Gradle
-        run: |
-          cd ./backend/
-          ./gradlew build --stacktrace
+        run: ./gradlew build --stacktrace
+        working-directory: './backend'
         env:
           # The hostname used to communicate with the PostgreSQL service container
           POSTGRES_HOST: db
@@ -69,9 +68,8 @@ jobs:
           POSTGRES_PORT: 5432
 
       - name: Test with Gradle
-        run: |
-          cd ./backend/
-          ./gradlew test --stacktrace
+        run: ./gradlew test --stacktrace
+        working-directory: './backend'
         env:
           # The hostname used to communicate with the PostgreSQL service container
           POSTGRES_HOST: db
@@ -80,6 +78,5 @@ jobs:
           POSTGRES_PORT: 5432
 
       - name: Clean Gradle
-        run: |
-          cd ./backend/
-          ./gradlew clean --stacktrace
+        run: ./gradlew clean --stacktrace
+        working-directory: './backend'
