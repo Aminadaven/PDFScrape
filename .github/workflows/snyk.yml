@@ -16,11 +16,13 @@ jobs:
     # Downloads a copy of the code in your repository before running CI tests
     - name: Check out repository code
       uses: actions/checkout@v2
-      
-    - name: Build all Docker images
-      run: |
-        docker build -t backend ./backend/.
-        docker build -t frontend ./frontend/.
+
+    - name: Build backend image
+      run: | 
+        chmod +x ./gradlew
+        ./gradlew build -x test
+        docker build -t backend .
+      working-directory: './backend'
       
     - name: Scan backend
       continue-on-error: true
@@ -29,15 +31,19 @@ jobs:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         image: backend
-        args: |
-          --severity-threshold=high
+#        args: |
+#          --severity-threshold=high
 #          --file=Dockerfile
 #      working-directory: './backend'
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v1
       with:
         sarif_file: snyk.sarif
-      
+
+    - name: Build frontend image
+      run: |
+        docker build -t frontend ./frontend/.
+
     - name: Scan frontend
       continue-on-error: true
       uses: snyk/actions/docker@master
