@@ -29,7 +29,7 @@ jobs:
         image: backend
         args: |
           --severity-threshold=high
-          --file=Dockerfile
+          --file=/backend/Dockerfile
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v1
       with:
@@ -44,7 +44,7 @@ jobs:
         image: frontend
         args: |
           --severity-threshold=high
-          --file=Dockerfile
+          --file=/frontend/Dockerfile
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v1
       with:
