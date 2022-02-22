@@ -18,7 +18,9 @@ jobs:
       uses: actions/checkout@v2
       
     - name: Build all Docker images
-      run: docker-compose build -f docker-compose.prod.yml --parallel
+      run: |
+        docker build -t backend ./backend/Dockerfile
+        docker build -t frontend ./frontend/Dockerfile
       
     - name: Scan backend
       continue-on-error: true
@@ -27,7 +29,10 @@ jobs:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         image: backend
-        args: --severity-threshold=high
+        args: |
+          --severity-threshold=high
+#          --file=Dockerfile
+#      working-directory: './backend'
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v1
       with:
@@ -40,7 +45,10 @@ jobs:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         image: frontend
-        args: --severity-threshold=high
+        args: |
+          --severity-threshold=high
+#          --file=Dockerfile
+#      working-directory: './frontend'
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v1
       with:
