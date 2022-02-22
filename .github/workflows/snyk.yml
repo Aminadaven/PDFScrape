@@ -1,0 +1,51 @@
+name: Snyk Container
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  snyk:
+    runs-on: ubuntu-latest
+    steps:
+    # Downloads a copy of the code in your repository before running CI tests
+    - name: Check out repository code
+      uses: actions/checkout@v2
+      
+    - name: Build all Docker images
+      run: docker-compose build --parallel docker-compose.prod.yml
+      
+    - name: Scan backend
+      continue-on-error: true
+      uses: snyk/actions/docker@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        image: backend
+        args: |
+          --severity-threshold=high
+          --file=Dockerfile
+    - name: Upload result to GitHub Code Scanning
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: snyk.sarif
+      
+    - name: Scan frontend
+      continue-on-error: true
+      uses: snyk/actions/docker@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        image: frontend
+        args: |
+          --severity-threshold=high
+          --file=Dockerfile
+    - name: Upload result to GitHub Code Scanning
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: snyk.sarif
