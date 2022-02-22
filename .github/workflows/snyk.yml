@@ -25,24 +25,15 @@ jobs:
       working-directory: './backend'
       
     - name: Scan backend
-      continue-on-error: true
       uses: snyk/actions/docker@master
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         image: backend
-#        args: |
-#          --severity-threshold=high
-#          --file=Dockerfile
-#      working-directory: './backend'
-    - name: Upload result to GitHub Code Scanning
-      uses: github/codeql-action/upload-sarif@v1
-      with:
-        sarif_file: snyk.sarif
+        args: --severity-threshold=high
 
     - name: Build frontend image
-      run: |
-        docker build -t frontend ./frontend/.
+      run: docker build -t frontend ./frontend/.
 
     - name: Scan frontend
       continue-on-error: true
@@ -51,11 +42,4 @@ jobs:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         image: frontend
-        args: |
-          --severity-threshold=high
-#          --file=Dockerfile
-#      working-directory: './frontend'
-    - name: Upload result to GitHub Code Scanning
-      uses: github/codeql-action/upload-sarif@v1
-      with:
-        sarif_file: snyk.sarif
+        args: --severity-threshold=high
