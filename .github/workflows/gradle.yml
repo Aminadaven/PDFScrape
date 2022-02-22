@@ -1,0 +1,72 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+
+name: Java Spring & PostgreSQL CI with Gradle
+
+on:
+  push:
+    branches: [ dev/backend/* ]
+
+jobs:
+  # Label of the container job
+  container-job:
+    # Containers must run in Linux based operating systems
+    runs-on: ubuntu-latest
+    # Docker Hub image that `container-job` executes in
+    container: eclipse-temurin:latest
+
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      db:
+        # Docker Hub image
+        image: postgres:alpine
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: react
+          POSTGRES_DB: files
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      # Downloads a copy of the code in your repository before running CI tests
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Make gradlew executable
+        run: chmod +x ./backend/gradlew
+
+      - name: Build with Gradle
+        run: |
+          cd ./backend/
+          ./gradlew build --stacktrace
+        env:
+          # The hostname used to communicate with the PostgreSQL service container
+          POSTGRES_HOST: db
+          POSTGRES_DB: files
+          # The default PostgreSQL port
+          POSTGRES_PORT: 5432
+
+      - name: Test with Gradle
+        run: |
+          cd ./backend/
+          ./gradlew test --stacktrace
+        env:
+          # The hostname used to communicate with the PostgreSQL service container
+          POSTGRES_HOST: db
+          POSTGRES_DB: files
+          # The default PostgreSQL port
+          POSTGRES_PORT: 5432
+
+      - name: Clean Gradle
+        run: |
+          cd ./backend/
+          ./gradlew clean --stacktrace
