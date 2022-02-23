@@ -11,7 +11,7 @@ export default class Files extends Component {
   }
 
   componentDidMount () {
-    fetch('http://localhost:8080/files')
+    fetch(`http://${process.env.BACKEND_HOST || 'localhost'}:8080/files`)
       .then(response => response.json())
       .then(files => this.setState({ files }))
   }
