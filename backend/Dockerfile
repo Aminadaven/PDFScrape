@@ -1,9 +1,10 @@
 FROM azul/zulu-openjdk-alpine:17 as packager
+
+COPY "build/libs/backend-0.0.1-SNAPSHOT.jar" "/app.jar"
+
 RUN apk add binutils # for objcopy, needed by jlink
 
 ENV JAVA_MINIMAL=/opt/jre
-
-COPY "build/libs/backend-0.0.1-SNAPSHOT.jar" "/app.jar"
 
 # build modules distribution
 RUN jdeps --print-module-deps --ignore-missing-deps app.jar > java.modules
@@ -33,12 +34,11 @@ COPY --from=packager app.jar .
 
 RUN apk update \
  && apk add fontconfig \
- && apk add ttf-dejavu \
- && apk add font-noto-hebrew
+ && apk add ttf-dejavu
 RUN ln -s /usr/lib/libfontconfig.so.1 /usr/lib/libfontconfig.so && \
     ln -s /lib/libuuid.so.1 /usr/lib/libuuid.so.1 && \
     ln -s /lib/libc.musl-x86_64.so.1 /usr/lib/libc.musl-x86_64.so.1
 ENV LD_LIBRARY_PATH /usr/lib
 
-#EXPOSE 8080
+EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app.jar"]
