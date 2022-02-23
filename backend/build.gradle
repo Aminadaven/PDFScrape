@@ -36,6 +36,8 @@ dependencies {
 	implementation('technology.tabula:tabula:1.+', { exclude group: 'org.slf4j', module: 'slf4j-simple' })
 	implementation 'org.apache.poi:poi-ooxml:5.+'
 
+	implementation 'org.springdoc:springdoc-openapi-ui:1.+'
+
 	runtimeOnly 'org.postgresql:postgresql:42.+'
 }
 
