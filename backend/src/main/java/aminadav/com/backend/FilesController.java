@@ -9,8 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriUtils;
 
-import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,7 +69,7 @@ public class FilesController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<byte[]> getFile(@PathVariable String id, HttpServletResponse response) {
+    public ResponseEntity<byte[]> getFile(@PathVariable String id) {
         Optional<FileEntity> fileEntityOptional = fileService.getFile(id);
 
         if (!fileEntityOptional.isPresent()) {
@@ -79,7 +80,8 @@ public class FilesController {
 
         return ResponseEntity.ok().
                 header("Content-Type", MediaType.APPLICATION_OCTET_STREAM_VALUE)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileEntity.getName() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
+                        UriUtils.encode(fileEntity.getName(), StandardCharsets.UTF_8) + "\"")
                 .body(fileEntity.getData());
     }
 }
