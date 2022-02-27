@@ -17,7 +17,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:8080", "http://localhost:80", "http://localhost:3000"})
+@CrossOrigin(origins = {"http://localhost:8080",
+                "http://localhost:80",
+                "http://localhost:3000"},
+        exposedHeaders = "*")
 @RequestMapping("files")
 @Log
 public class FilesController {
@@ -38,11 +41,12 @@ public class FilesController {
             }
             fileService.save(file);
             log.info("File saved: " + file.getOriginalFilename());
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(String.format("File uploaded successfully: %s", file.getOriginalFilename()));
+            return ResponseEntity
+                    .ok("File uploaded successfully: " + file.getOriginalFilename());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(String.format("Could not upload the file: %s!", file.getOriginalFilename()));
+            return ResponseEntity
+                    .internalServerError()
+                    .body("Could not upload the file: " + file.getOriginalFilename());
         }
     }
 
