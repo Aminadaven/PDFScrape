@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8080", "http://localhost:80", "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:8080", "http://localhost:80", "http://localhost:3000"})
 @RequestMapping("files")
 @Log
 public class FilesController {
