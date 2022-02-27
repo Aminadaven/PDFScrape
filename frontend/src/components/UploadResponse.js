@@ -2,10 +2,12 @@ import React from 'react'
 import Alert from 'react-bootstrap/Alert'
 
 const UploadResponse = ({ response, isError }) => {
-  if (isError) {
+  if (isError === null) {
+    return <></>
+  } else if (isError === true || isError === undefined) {
     return (
       <Alert variant='danger' dismissible>
-        <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+        <Alert.Heading>Oh snap! You got an error! {isError} </Alert.Heading>
         <p>{response}</p>
       </Alert>
     )
