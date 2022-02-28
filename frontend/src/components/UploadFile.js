@@ -19,7 +19,7 @@ export default class UploadFile extends Component {
       headers: {
         'Access-Control-Allow-Origin': '*', 
         'Accept': '*/*'
-      }
+      }, 
       body: formdata,
       redirect: 'follow'
     }
