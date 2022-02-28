@@ -32,16 +32,16 @@ jobs:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         image: backend
-        args: --severity-threshold=high
+#        args: --severity-threshold=high
 
     - name: Build frontend image
       run: docker build -t frontend ./frontend/.
 
     - name: Scan frontend
-      continue-on-error: true
+      #      continue-on-error: true
       uses: snyk/actions/docker@master
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         image: frontend
-        args: --severity-threshold=high
+#        args: --severity-threshold=high
