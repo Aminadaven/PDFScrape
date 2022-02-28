@@ -16,6 +16,10 @@ export default class UploadFile extends Component {
     const requestOptions = {
       method: 'POST',
       mode: 'cors', 
+      headers: {
+        'Access-Control-Allow-Origin': '*', 
+        'Accept': '*/*'
+      }
       body: formdata,
       redirect: 'follow'
     }
@@ -24,8 +28,8 @@ export default class UploadFile extends Component {
       `http://${process.env.BACKEND_HOST || 'localhost'}:8080/files`,
       requestOptions
     )
-      .then(response => this.props.updateStatus(response.text(), response.ok))
-      .catch(error => this.props.updateStatus(error, true))
+      .then(response => this.props.updateStatus(response.text(), response.status))
+      .catch(error => this.props.updateStatus(error, null))
   }
 
   render () {
