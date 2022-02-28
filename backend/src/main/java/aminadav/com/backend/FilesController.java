@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:8080",
-                "http://localhost:80",
-                "http://localhost:3000"},
+        "http://localhost:80",
+        "http://localhost:3000"},
         exposedHeaders = "*")
 @RequestMapping("files")
 @Log
@@ -32,7 +32,8 @@ public class FilesController {
         this.fileService = fileService;
     }
 
-    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(produces = "application/json")
     public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) {
         try {
             if (file.isEmpty()) {
