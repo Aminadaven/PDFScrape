@@ -13,10 +13,14 @@ export default class App extends Component {
     super(props)
     this.state = { uploadResponse: null }
   }
+  
+  close() {
+    this.setState({ uploadResponse: null })
+  }
 
-  updateStatus (response, isError) {
+  updateStatus (response, status) {
     this.setState({
-        uploadResponse: <UploadResponse response={response} isError={isError} />
+        uploadResponse: <UploadResponse response={response} status={status} close={this.close.bind(this)} />
     })
   }
 
