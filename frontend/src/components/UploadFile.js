@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
@@ -15,11 +15,11 @@ export default class UploadFile extends Component {
 
     const requestOptions = {
       method: 'POST',
-      mode: 'cors', 
+      mode: 'cors',
       headers: {
-        'Access-Control-Allow-Origin': '*', 
-        'Accept': '*/*'
-      }, 
+        'Access-Control-Allow-Origin': '*',
+        Accept: '*/*'
+      },
       body: formdata,
       redirect: 'follow'
     }
@@ -28,7 +28,11 @@ export default class UploadFile extends Component {
       `http://${process.env.BACKEND_HOST || 'localhost'}:8080/files`,
       requestOptions
     )
-      .then(response => this.props.updateStatus(response.text(), response.status))
+      .then(response =>
+        response
+          .text()
+          .then(data => this.props.updateStatus(data, response.status))
+      )
       .catch(error => this.props.updateStatus(error, null))
   }
 

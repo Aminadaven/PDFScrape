@@ -1,19 +1,22 @@
 import React from 'react'
 import Alert from 'react-bootstrap/Alert'
 
-const UploadResponse = ({ response, status, close }) => {
-  if (status === 200) {
+function UploadResponse (props) {
+  console.log(props)
+  if (props.status === 200) {
     return (
-      <Alert variant='success' onClose={() => close()} dismissible>
+      <Alert variant='success' onClose={props.close} dismissible>
         <Alert.Heading>Success!</Alert.Heading>
-        <p>{response}</p>
+        <p>{props.response}</p>
       </Alert>
     )
   } else {
     return (
-      <Alert variant='danger' onClose={() => close()} dismissible>
-        <Alert.Heading>Oh snap! You got an error! {status} </Alert.Heading>
-        <p>{response}</p>
+      <Alert variant='danger' onClose={props.close} dismissible>
+        <Alert.Heading>
+          There was an error. Code: {props.status}
+        </Alert.Heading>
+        <p>{props.response}</p>
       </Alert>
     )
   }
