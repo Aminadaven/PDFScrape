@@ -12,7 +12,7 @@ const UploadResponse = ({ response, status, close }) => {
   } else {
     return (
       <Alert variant='danger' onClose={() => close()} dismissible>
-        <Alert.Heading>Oh snap! You got an error! {isError} </Alert.Heading>
+        <Alert.Heading>Oh snap! You got an error! {status} </Alert.Heading>
         <p>{response}</p>
       </Alert>
     )
