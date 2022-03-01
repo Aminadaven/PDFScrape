@@ -1,4 +1,4 @@
-package aminadav.com.backend;
+package aminadav.com.backend.model;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;

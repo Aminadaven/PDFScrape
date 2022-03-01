@@ -1,4 +1,4 @@
-package aminadav.com.backend;
+package aminadav.com.backend.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,13 +12,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity<String> handleMaxSizeException(MaxUploadSizeExceededException exc) {
+    public ResponseEntity<String> handleMaxSizeException(/*MaxUploadSizeExceededException exc*/) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Unable to upload. File is too large!");
     }
 
     @ExceptionHandler(MultipartException.class)
-    public ResponseEntity<String> handleMultipartException(MultipartException exc) {
+    public ResponseEntity<String> handleMultipartException(/*MultipartException exc*/) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Current request is not a multipart request");
     }
