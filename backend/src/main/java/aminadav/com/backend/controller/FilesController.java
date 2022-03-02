@@ -1,9 +1,11 @@
-package aminadav.com.backend;
+package aminadav.com.backend.controller;
 
+import aminadav.com.backend.logic.FileService;
+import aminadav.com.backend.model.FileEntity;
+import aminadav.com.backend.model.FileResponse;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +18,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Log
 @RestController
 @CrossOrigin(origins = {"http://localhost:8080",
         "http://localhost:80",
         "http://localhost:3000"},
         exposedHeaders = "*")
 @RequestMapping("files")
-@Log
 public class FilesController {
 
     private final FileService fileService;
@@ -32,8 +34,7 @@ public class FilesController {
         this.fileService = fileService;
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(produces = "application/json")
+    @PostMapping
     public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) {
         try {
             if (file.isEmpty()) {
@@ -77,7 +78,7 @@ public class FilesController {
     public ResponseEntity<byte[]> getFile(@PathVariable String id) {
         Optional<FileEntity> fileEntityOptional = fileService.getFile(id);
 
-        if (!fileEntityOptional.isPresent()) {
+        if (fileEntityOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
