@@ -21,6 +21,7 @@ services:
     environment:
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
       - POSTGRES_DB=files
       - POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}:${POSTGRES_PASSWORD}
     ports:
@@ -38,6 +39,7 @@ services:
       - spring-postgres
     environment:
       - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
       - POSTGRES_DB=files
       - POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}:${POSTGRES_PASSWORD}
     ports:

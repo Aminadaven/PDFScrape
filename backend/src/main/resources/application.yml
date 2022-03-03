@@ -8,7 +8,7 @@ spring:
       max-request-size: 1GB
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:files}?createDatabaseIfNotExist=true
-    username: ${POSTGRES_PASSWORD:postgres}
+    username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:react}
   sql:
     init:
