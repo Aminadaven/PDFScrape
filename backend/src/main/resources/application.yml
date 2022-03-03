@@ -1,0 +1,29 @@
+# max file size for uploads
+spring:
+  main:
+    banner-mode: off
+  servlet:
+    multipart:
+      max-file-size: 1GB
+      max-request-size: 1GB
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:files}?createDatabaseIfNotExist=true
+    username: ${POSTGRES_PASSWORD:postgres}
+    password: ${POSTGRES_PASSWORD:react}
+  sql:
+    init:
+      mode: always
+      platform: postgres
+      continue-on-error: true
+  #      schema-locations: classpath:/schema-postgres.sql
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+logging:
+  level: warn
