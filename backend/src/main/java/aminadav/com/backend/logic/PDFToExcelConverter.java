@@ -39,9 +39,9 @@ public final class PDFToExcelConverter {
             }
             String excelFilename = pdfFile.getOriginalFilename().replace(".pdf", ".xlsx");
             File excelFile = new File(excelFilename);
-            FileOutputStream out = new FileOutputStream(excelFile);
-            wb.write(out);
-            out.close();
+            try (FileOutputStream out = new FileOutputStream(excelFile)) {
+                wb.write(out);
+            }
             // dispose of temporary files backing this workbook on disk
             wb.dispose();
             return excelFile;

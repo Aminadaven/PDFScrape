@@ -1,9 +1,7 @@
-name: Snyk Container
+name: Backend Scan before pull request
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -32,16 +30,3 @@ jobs:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         image: backend
-#        args: --severity-threshold=high
-
-    - name: Build frontend image
-      run: docker build -t frontend ./frontend/.
-
-    - name: Scan frontend
-      #      continue-on-error: true
-      uses: snyk/actions/docker@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        image: frontend
-#        args: --severity-threshold=high
