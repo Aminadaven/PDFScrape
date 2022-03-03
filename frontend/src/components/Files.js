@@ -20,6 +20,7 @@ export default class Files extends Component {
                     this.setState({files})
                 }
             })
+            .catch(error => this.props.updateStatus(error, null))
     }
 
     componentDidMount() {

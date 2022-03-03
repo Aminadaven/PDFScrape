@@ -57,7 +57,7 @@ export default class App extends Component {
                         <UploadFile updateStatus={this.updateStatus.bind(this)}/>
                     </ErrorBoundary>
                     <ErrorBoundary>
-                        <Files/>
+                        <Files updateStatus={this.updateStatus.bind(this)}/>
                     </ErrorBoundary>
                 </Container>
             </Container>
