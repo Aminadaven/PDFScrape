@@ -8,25 +8,43 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
-  snyk:
+  build_scan_deploy:
     runs-on: ubuntu-latest
     steps:
-    # Downloads a copy of the code in your repository before running CI tests
-    - name: Check out repository code
-      uses: actions/checkout@v2
+      # Downloads a copy of the code in your repository before running CI tests
+      - name: Check out repository code
+        uses: actions/checkout@v2
 
-    - name: Build backend image
-      run: |
-        chmod +x ./env
-        ./env ${{ secrets.POSTGRES_PASSWORD }}
-        chmod +x ./gradlew
-        ./gradlew build -x test
-        docker build -t backend .
-      working-directory: './backend'
-      
-    - name: Scan backend
-      uses: snyk/actions/docker@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        image: backend
+      - name: Build backend image
+        run: |
+          chmod +x ./env
+          ./env ${{ secrets.POSTGRES_PASSWORD }}
+          chmod +x ./gradlew
+          ./gradlew build -x test
+          docker build -t backend .
+        working-directory: './backend'
+
+      - name: Scan backend
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: backend
+
+#      - name: Build, Push and Release a Docker container to Heroku. # Your custom step name
+#        uses: gonuit/heroku-docker-deploy@v1.3.3 # GitHub action name (leave it as it is).
+#        with:
+#          email: ${{ secrets.HEROKU_EMAIL }}
+#          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+#          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+#          dockerfile_directory: ./backend
+#          # (Optional, default: "Dockerfile")
+#          dockerfile_name: Dockerfile
+#          # (Optional, default: "")
+#          # Additional options of docker build command.
+#          docker_options: ""
+#          # (Optional, default: "web")
+#          # Select the process type for which you want the docker container to be uploaded.
+#          # By default, this argument is set to "web".
+#          # For more information look at https://devcenter.heroku.com/articles/process-model
+#          process_type: web
