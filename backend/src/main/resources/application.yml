@@ -26,4 +26,5 @@ spring:
           lob:
             non_contextual_creation: true
 logging:
-  level: warn
+  level:
+    root: warn

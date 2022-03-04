@@ -28,8 +28,9 @@ jobs:
           heroku_email: "aminadaven@gmail.com"
           usedocker: true
           appdir: "backend"
-#          healthcheck: "https://pdf-scrape.herokuapp.com/health"
-#          rollbackonhealthcheckfailed: true
+          env_file: "heroku.env"
+          healthcheck: "https://pdf-scrape.herokuapp.com/files"
+          rollbackonhealthcheckfailed: true
 #  frontend:
 #    runs-on: ubuntu-latest
 #    steps:
