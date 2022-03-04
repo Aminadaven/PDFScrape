@@ -19,8 +19,8 @@ jobs:
         run: |
           chmod +x ./env
           ./env ${{ secrets.POSTGRES_PASSWORD }}
-        chmod +x ./gradlew
-        ./gradlew build -x test
+          chmod +x ./gradlew
+          ./gradlew build -x test
           docker build -t backend .
         working-directory: './backend'
 
