@@ -9,7 +9,18 @@ jobs:
   backend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Build backend image
+        run: |
+          chmod +x ./env
+          ./env ${{ secrets.POSTGRES_PASSWORD }}
+          chmod +x ./gradlew
+          ./gradlew build -x test
+          docker build -t backend .
+        working-directory: './backend'
+
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
@@ -19,16 +30,16 @@ jobs:
           appdir: "backend"
           healthcheck: "https://pdf-scrape.herokuapp.com/health"
           rollbackonhealthcheckfailed: true
-  frontend:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "pdf-scrape" #Must be unique in Heroku
-          heroku_email: "aminadaven@gmail.com"
-          usedocker: true
-          appdir: "frontend"
-          healthcheck: "https://pdf-scrape.herokuapp.com/health"
-          rollbackonhealthcheckfailed: true
+#  frontend:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+#        with:
+#          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+#          heroku_app_name: "pdf-scrape" #Must be unique in Heroku
+#          heroku_email: "aminadaven@gmail.com"
+#          usedocker: true
+#          appdir: "frontend"
+#          healthcheck: "https://pdf-scrape.herokuapp.com/health"
+#          rollbackonhealthcheckfailed: true
