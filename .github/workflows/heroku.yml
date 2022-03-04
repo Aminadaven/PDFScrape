@@ -18,7 +18,7 @@ jobs:
           ./env ${{ secrets.POSTGRES_PASSWORD }}
           chmod +x ./gradlew
           ./gradlew build -x test
-          docker build -t backend .
+#          docker build -t backend .
         working-directory: './backend'
 
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
@@ -28,8 +28,8 @@ jobs:
           heroku_email: "aminadaven@gmail.com"
           usedocker: true
           appdir: "backend"
-          healthcheck: "https://pdf-scrape.herokuapp.com/health"
-          rollbackonhealthcheckfailed: true
+#          healthcheck: "https://pdf-scrape.herokuapp.com/health"
+#          rollbackonhealthcheckfailed: true
 #  frontend:
 #    runs-on: ubuntu-latest
 #    steps:
