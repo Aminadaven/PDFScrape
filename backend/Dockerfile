@@ -24,7 +24,7 @@ RUN jlink \
     --output "$JAVA_MINIMAL"
 
 # Second stage, add only our minimal "JRE" distr and our app
-FROM alpine:latest as production
+FROM alpine:3.15 as production
 
 ENV JAVA_MINIMAL=/opt/jre
 ENV PATH="$PATH:$JAVA_MINIMAL/bin"
