@@ -1,18 +1,13 @@
-buildscript {
-	ext {
-		springBootVersion = '2.+'
-	}
-}
-
 plugins {
-	id 'org.springframework.boot' version "$springBootVersion"
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'org.springframework.boot' version '3.0.0'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'com.google.cloud.tools.jib' version '3.3.1'
 }
 
 group = 'aminadav.com'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 
 configurations {
 	compileOnly {
@@ -33,14 +28,35 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 //	excluded slf4j to not have 2 in the classpath
-	implementation('technology.tabula:tabula:1.+', { exclude group: 'org.slf4j', module: 'slf4j-simple' })
-	implementation 'org.apache.poi:poi-ooxml:5.+'
+	implementation('technology.tabula:tabula:1.0.5', { exclude group: 'org.slf4j', module: 'slf4j-simple' })
+	implementation 'org.apache.poi:poi-ooxml:5.2.2'
 
-	implementation 'org.springdoc:springdoc-openapi-ui:1.+'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.13'
 
-	runtimeOnly 'org.postgresql:postgresql:42.+'
+	runtimeOnly 'org.postgresql:postgresql:42.5.1'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jib {
+	from {
+		image = 'docker.io/aminadaven/scratch-jre:min-17-fonts'
+		auth {
+			username = $DOCKER_USERNAME
+			password = $DOCKER_PASSWORD
+		}
+	}
+	to {
+		image = "docker.io/$rootProject.name"  // Can replace with any cloud or registry
+		auth {
+			username = $CLOUD_USERNAME
+			password = $CLOUD_PASSWORD
+		}
+		tags = [$version, 'latest']
+	}
+	container {
+		user = 1000
+	}
 }
