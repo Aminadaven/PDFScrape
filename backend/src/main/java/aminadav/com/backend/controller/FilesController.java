@@ -13,13 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriUtils;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Log
 @RestController
@@ -44,10 +40,6 @@ public class FilesController {
                 log.warning("Empty file. Operation stopped.");
                 throw new Exception();
             }
-            Path userDirectory = Paths.get("").toAbsolutePath();
-            Path entryPath = Path.of(file.getOriginalFilename());
-            if (!entryPath.normalize().startsWith(userDirectory))
-                throw new IOException("Zip entry contained path traversal");
             fileService.save(file);
             log.info("File saved: " + file.getOriginalFilename());
             return ResponseEntity
@@ -55,7 +47,8 @@ public class FilesController {
         } catch (Exception e) {
             return ResponseEntity
                     .internalServerError()
-                    .body("Could not upload the file: " + file.getOriginalFilename());
+                    .body("Could not upload the file: " + file.getOriginalFilename()
+                            + " more details: " + e.getMessage());
         }
     }
 
@@ -64,7 +57,7 @@ public class FilesController {
         return fileService.getAllFiles()
                 .stream()
                 .map(this::mapToFileResponse)
-                .collect(Collectors.toList());
+            .toList();
     }
 
     private FileResponse mapToFileResponse(FileEntity fileEntity) {
